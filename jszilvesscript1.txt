@@ -1,0 +1,23 @@
+SHOW DATABASES;
+DATABASE IF EXISTS jszilvesassign2db;
+CREATE DATABASE jszilvesassign2db;
+USE jszilvesassign2db;
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON jszilvesassign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+SHOW TABLES;
+
+CREATE TABLE product (productid CHAR(2), description CHAR(20), costperitem FLOAT NOT NULL, productQuantity INT, PRIMARY KEY (productid));
+
+CREATE TABLE agent (agentid CHAR(2), firstname CHAR(30), lastname CHAR(30), cityofwork CHAR(15), commissionperc FLOAT, PRIMARY KEY (agentid));
+
+CREATE TABLE  customer (customerid CHAR(2), firstname CHAR(30), lastname CHAR(30), city CHAR(15), phonenum INT, agentid CHAR (2), PRIMARY KEY(customerid), FOREIGN KEY (agentid) REFERENCES agent(agentid)ON DELETE NO ACTION); 
+
+CREATE TABLE purchased (productid CHAR(2), customerid CHAR(2), quantity INT, FOREIGN KEY (productid) REFERENCES product(productid), FOREIGN KEY (customerid) REFERENCES customer(customerid));
+
+SHOW TABLES;
+
+
+sudo mysql --verbose -pcs3319 < jszilvesscript1.txt > jszilvesoutputscript1.txt 2>&1;

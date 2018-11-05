@@ -1,0 +1,66 @@
+Warning: Using a password on the command line interface can be insecure.
+ERROR 1064 (42000) at line 18: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '---what does % mean
+
+
+SELECT lastname, description, quantity FROM customer, prod' at line 1
+--------------
+SELECT description FROM product
+--------------
+
+description
+Bike
+Socks
+Elbow pads
+Knee Pads
+Roller Blades
+Helmet
+--------------
+SELECT DISTINCT city FROM customer
+--------------
+
+city
+Boston
+Springfield
+Kypto
+Providence
+--------------
+SELECT * FROM agent ORDER BY cityofwork
+--------------
+
+agentid	firstname	lastname	cityofwork	commissionperc
+33	David	Letterman	Bedrock	100
+11	Regis	Philbin	Boston	33
+17	Julia	Szilveszter	London	98
+22	Courtney	Cox	New York	25
+12	Rosie	Cox	Ottawa	50
+66	Rosie	ODonnell	Ottawa	100
+99	Hugh	Grant	Springfield	16
+--------------
+SELECT firstname, lastname FROM customer WHERE city= 'Springfield'
+--------------
+
+firstname	lastname
+Monty	Burns
+Homer	Simpson
+Sideshow	Bob
+--------------
+SELECT lastname FROM customer WHERE agentid IN (SELECT agentid FROM agent WHERE firstname= 'Regis')
+--------------
+
+lastname
+Rubble
+Flintstone
+--------------
+SELECT description FROM product WHERE description like '%pad%' OR description like '%Pad%'
+--------------
+
+description
+Elbow pads
+Knee Pads
+--------------
+---what does % mean
+
+
+SELECT lastname, description, quantity FROM customer, product, purchased WHERE customer.customerid=purchased.customerid and product.productid=purchased.productid
+--------------
+

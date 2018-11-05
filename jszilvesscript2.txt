@@ -1,0 +1,86 @@
+USE jszilvesassign2db;
+
+LOAD DATA LOCAL INFILE 'loadfall2018.txt' 
+INTO TABLE product 
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+SELECT * FROM product;
+
+INSERT INTO product (productid, description, costperitem, productQuantity) VALUES (66,  'Elbow pads', 14.25, 120);
+
+INSERT INTO product (productid, description, costperitem, productQuantity) VALUES (67, 'Bell', 3.50, 300);
+
+
+
+INSERT INTO agent (agentid, firstname, lastname, cityofwork, commissionperc) VALUES (99, 'Hugh', 'Grant', 'Springfield', 16);
+
+INSERT INTO agent (agentid, firstname, lastname, cityofwork, commissionperc) VALUES (22, 'Courtney', 'Cox', 'New York', 25);
+
+INSERT INTO agent (agentid, firstname, lastname, cityofwork, commissionperc) VALUES (66, 'Rosie', 'ODonnell', 'Ottawa', 100);
+
+INSERT INTO agent (agentid, firstname, lastname, cityofwork, commissionperc) VALUES (33, 'David', 'Letterman', 'Bedrock', 100);
+
+INSERT INTO agent (agentid, firstname, lastname, cityofwork, commissionperc) VALUES (11, 'Regis', 'Philbin', 'Boston', 33);
+
+INSERT INTO agent (agentid, firstname, lastname, cityofwork, commissionperc) VALUES (12, 'Rosie', 'Cox',  'Ottawa', 50);
+
+INSERT INTO agent (agentid, firstname, lastname, cityofwork, commissionperc) VALUES (17, 'Julia', 'Szilveszter', 'London', 98);
+
+
+INSERT INTO customer (customerid, firstname,lastname, city, phonenum, agentid) VALUES (21, 'Homer', 'Simpson', 'Springfield', 6868956, 99);
+
+INSERT INTO customer (customerid, firstname,lastname, city, phonenum, agentid) VALUES (31, 'Sideshow', 'Bob', 'Springfield', 6865555, 66);
+
+INSERT INTO customer (customerid, firstname,lastname, city, phonenum, agentid) VALUES (12, 'Monty', 'Burns', 'Springfield', 7890000, 99);
+
+INSERT INTO customer (customerid, firstname,lastname, city, phonenum, agentid) VALUES (15, 'Fred', 'Flintstone', 'Bedrock', 7772345, 11);
+
+INSERT INTO customer (customerid, firstname,lastname, city, phonenum, agentid) VALUES (13, 'Super', 'Man', 'Kypto', 8881234, 33);
+
+INSERT INTO customer (customerid, firstname,lastname, city, phonenum, agentid) VALUES (10, 'Barney', 'Rubble', 'Bedrock', 7771234, 11);
+
+INSERT INTO customer (customerid, firstname,lastname, city, phonenum, agentid) VALUES (14, 'Peter', 'Griffens', 'Providence', 9874567, 99);
+
+INSERT INTO purchased (productid, customerid, quantity) VALUES (99, 21, 20);
+
+INSERT INTO purchased (productid, customerid, quantity) VALUES (12, 21, 14);
+
+
+INSERT INTO purchased (productid, customerid, quantity) VALUES 
+(66, 99, 10);
+
+INSERT INTO purchased (productid, customerid, quantity) VALUES (99,31, 1);
+
+INSERT INTO purchased (productid, customerid, quantity) VALUES (12,31, 2);
+
+INSERT INTO purchased (productid, customerid, quantity) VALUES (78,31,4);
+
+
+INSERT INTO purchased (productid, customerid, quantity) VALUES (66,31, 2);
+
+
+INSERT INTO purchased (productid, customerid, quantity) VALUES (66,15,2);
+
+
+INSERT INTO purchased (productid, customerid, quantity) VALUES (78,15,2);
+
+
+INSERT INTO purchased (productid, customerid, quantity) VALUES (66,14,19);
+
+SELECT * FROM agent;
+SELECT * FROM product;
+SELECT * FROM customer;
+SELECT * FROM purchased;
+
+UPDATE customer SET firstname = 'Wonder', lastname= 'Woman' WHERE customerid= 13; #WHAT FIX FIX FIX 
+
+UPDATE purchased SET quantity= 5 WHERE customerid IN (SELECT customerid FROM customer WHERE firstname='Sideshow'); #DONT KNOW IF THIS IS OKAY 
+
+UPDATE customer SET city= 'Boston' WHERE agentid IN (SELECT agentid FROM agent WHERE firstname= 'Regis');
+
+SELECT * FROM agent;
+SELECT * FROM product;
+SELECT * FROM customer;
+SELECT * FROM purchased;

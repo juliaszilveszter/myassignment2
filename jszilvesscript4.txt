@@ -1,0 +1,21 @@
+SELECT * FROM agent;
+SELECT * FROM product;
+SELECT * FROM customer;
+SELECT * FROM purchased;
+
+CREATE VIEW customerAllInfo AS SELECT firstname, lastname, description, quantity, costperitem, costperitem*quantity FROM customer, purchased, product WHERE customer.customerid=purchased.customerid and purchased.productid=product.productid ORDER BY lastname;
+
+---- probably change the deciamls for last column
+
+SELECT * FROM customerAllInfo ;
+
+SELECT * FROM customerAllInfo WHERE costperitem*quantity>100;
+
+DELETE FROM product WHERE description= 'Bell';
+
+SELECT * FROM product;
+
+DELETE FROM agent WHERE cityofwork= 'Springfield';
+-- the row for which the agent from Spingfield was not deleted because it was assigned to customers in the customer table on which I put the constraint for the foreign key which agentid is 'ON DELETE NO ACTION' because in the instrucitons we were told agents who are working with customers may not be deleted.
+
+

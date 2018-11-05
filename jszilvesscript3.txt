@@ -1,0 +1,58 @@
+USE jszilvesassign2db;
+-- Query 1
+SELECT description FROM product;
+
+-- Query 2
+SELECT DISTINCT city FROM customer; 
+
+-- Query 3
+SELECT * FROM agent ORDER BY cityofwork;
+
+-- Query 4
+SELECT firstname, lastname FROM customer WHERE city= 'Springfield'; 
+
+-- Query 5
+SELECT lastname FROM customer WHERE agentid IN (SELECT agentid FROM agent WHERE firstname= 'Regis');
+
+-- Query 6
+SELECT description FROM product WHERE description like '%pad%' OR description like '%Pad%'; ---what does % mean
+
+-- Query 7
+SELECT lastname, description, quantity FROM customer, product, purchased WHERE customer.customerid=purchased.customerid and product.productid=purchased.productid;
+
+-- Query 8
+SELECT SUM(quantity) AS "Homer's Total Purchases" FROM purchased WHERE customerid IN (SELECT customerid FROM customer WHERE firstname ='Homer'); ---quotations
+
+-- Query 9 
+SELECT firstname, lastname,SUM(quantity) FROM purchased LEFT OUTER JOIN customer ON customer.customerid=purchased.customerid GROUP BY firstname;
+
+-- Query 10
+SELECT description, productQuantity FROM product WHERE productid NOT IN (SELECT productid FROM purchased);
+
+-- Query 11
+SELECT description, productQuantity FROM product WHERE productid NOT IN (SELECT productid FROM purchased WHERE customerid IN(SELECT customerid FROM customer WHERE firstname= 'Fred' and lastname= 'Flintstone'));
+
+-- Query 12
+SELECT c.firstname,c.lastname, a.firstname, a.lastname FROM customer c, agent a WHERE c.agentid=a.agentid and c.city=a.cityofwork;
+
+
+-- Query 13
+List the total number of knee pads that have been purchase. Give the result a nice title. 
+SELECT SUM(quantity) AS 'Total Knee Pads Purchased' FROM purchased WHERE productid IN (SELECT productid FROM product WHERE description= 'Knee Pads'); 
+--should i add knee pads or %knee Pads%?
+
+-- Query 14
+-- Find all products  (description) which have been purchased by more than 3 customers 
+--- help
+
+
+SELECT COUNT(description)>3, purchased.productid, description FROM product, purchased WHERE
+product.productid=purchased.productid GROUP BY productid;
+
+
+-- Query 15
+Find the first name and last name of all agents who deal with customers that have purchased knee pads.
+
+SELECT firstname, lastname FROM agent WHERE agentid IN(SELECT agentid FROM customer WHERE customerid IN(SELECT customerid FROM purchased WHERE productid IN (SELECT productid FROM product WHERE description='Knee Pads')));
+--- MIGHT BE EASIER WAY
+
