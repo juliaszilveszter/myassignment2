@@ -1,5 +1,8 @@
+-- Julia
+-- This script creates the database
+
 SHOW DATABASES;
-DATABASE IF EXISTS jszilvesassign2db;
+DROP DATABASE IF EXISTS jszilvesassign2db;
 CREATE DATABASE jszilvesassign2db;
 USE jszilvesassign2db;
 GRANT USAGE ON *.* TO 'ta'@'localhost';
@@ -18,6 +21,3 @@ CREATE TABLE  customer (customerid CHAR(2), firstname CHAR(30), lastname CHAR(30
 CREATE TABLE purchased (productid CHAR(2), customerid CHAR(2), quantity INT, FOREIGN KEY (productid) REFERENCES product(productid), FOREIGN KEY (customerid) REFERENCES customer(customerid));
 
 SHOW TABLES;
-
-
-sudo mysql --verbose -pcs3319 < jszilvesscript1.txt > jszilvesoutputscript1.txt 2>&1;
