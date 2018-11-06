@@ -1,10 +1,12 @@
--- Julia
+-- Julia Szilveszter
 -- This script creates the database
 
 SHOW DATABASES;
 DROP DATABASE IF EXISTS jszilvesassign2db;
 CREATE DATABASE jszilvesassign2db;
 USE jszilvesassign2db;
+
+-- granting useage to TAs
 GRANT USAGE ON *.* TO 'ta'@'localhost';
 DROP USER 'ta'@'localhost';
 CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
@@ -12,12 +14,16 @@ GRANT ALL PRIVILEGES ON jszilvesassign2db.* TO 'ta'@'localhost';
 FLUSH PRIVILEGES;
 SHOW TABLES;
 
+-- creating product table 
 CREATE TABLE product (productid CHAR(2), description CHAR(20), costperitem FLOAT NOT NULL, productQuantity INT, PRIMARY KEY (productid));
 
+-- creating agent table 
 CREATE TABLE agent (agentid CHAR(2), firstname CHAR(30), lastname CHAR(30), cityofwork CHAR(15), commissionperc FLOAT, PRIMARY KEY (agentid));
 
+-- creating customer table, with foriegn key agentid with constraint that states if an agent is trying to be deleted that is referenced in the customer table do not delete it 
 CREATE TABLE  customer (customerid CHAR(2), firstname CHAR(30), lastname CHAR(30), city CHAR(15), phonenum INT, agentid CHAR (2), PRIMARY KEY(customerid), FOREIGN KEY (agentid) REFERENCES agent(agentid)ON DELETE NO ACTION); 
 
+-- creating items purchased table that references the productid from product and the customerid from customer 
 CREATE TABLE purchased (productid CHAR(2), customerid CHAR(2), quantity INT, FOREIGN KEY (productid) REFERENCES product(productid), FOREIGN KEY (customerid) REFERENCES customer(customerid));
 
 SHOW TABLES;
