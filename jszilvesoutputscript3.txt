@@ -60,20 +60,8 @@ SELECT lastname, description, quantity FROM customer, product, purchased WHERE c
 
 lastname	description	quantity
 Griffens	Elbow pads	19
-Griffens	Elbow pads	19
-Griffens	Elbow pads	19
 Flintstone	Elbow pads	2
 Flintstone	Knee Pads	2
-Flintstone	Elbow pads	2
-Flintstone	Knee Pads	2
-Flintstone	Elbow pads	2
-Flintstone	Knee Pads	2
-Simpson	Helmet	20
-Simpson	Socks	14
-Simpson	Helmet	20
-Simpson	Socks	14
-Simpson	Helmet	20
-Simpson	Socks	14
 Simpson	Helmet	20
 Simpson	Socks	14
 Simpson	Elbow pads	10
@@ -81,29 +69,21 @@ Bob	Helmet	5
 Bob	Socks	5
 Bob	Knee Pads	5
 Bob	Elbow pads	5
-Bob	Helmet	1
-Bob	Socks	2
-Bob	Knee Pads	4
-Bob	Elbow pads	2
-Bob	Helmet	1
-Bob	Socks	2
-Bob	Knee Pads	4
-Bob	Elbow pads	2
 --------------
 SELECT SUM(quantity) AS "Homer's Total Purchases" FROM purchased WHERE customerid IN (SELECT customerid FROM customer WHERE firstname ='Homer')
 --------------
 
 Homer's Total Purchases
-146
+44
 --------------
 SELECT firstname, lastname,SUM(quantity) FROM purchased LEFT OUTER JOIN customer ON customer.customerid=purchased.customerid GROUP BY firstname
 --------------
 
 firstname	lastname	SUM(quantity)
-Fred	Flintstone	12
-Homer	Simpson	146
-Peter	Griffens	57
-Sideshow	Bob	38
+Fred	Flintstone	4
+Homer	Simpson	44
+Peter	Griffens	19
+Sideshow	Bob	20
 --------------
 SELECT description, productQuantity FROM product WHERE productid NOT IN (SELECT productid FROM purchased)
 --------------
@@ -136,17 +116,16 @@ SELECT SUM(quantity) AS 'Total Knee Pads Purchased' FROM purchased WHERE product
 --------------
 
 Total Knee Pads Purchased
-19
+7
 --------------
-SELECT COUNT(description)>3, purchased.productid, description FROM product, purchased WHERE
-product.productid=purchased.productid GROUP BY productid
+SELECT description FROM product WHERE productid IN(SELECT productid
+FROM purchased
+GROUP BY productid
+HAVING COUNT(*) >= 3)
 --------------
 
-COUNT(description)>3	productid	description
-1	12	Socks
-1	66	Elbow pads
-1	78	Knee Pads
-1	99	Helmet
+description
+Elbow pads
 --------------
 SELECT firstname, lastname FROM agent WHERE agentid IN(SELECT agentid FROM customer WHERE customerid IN(SELECT customerid FROM purchased WHERE productid IN (SELECT productid FROM product WHERE description='Knee Pads')))
 --------------

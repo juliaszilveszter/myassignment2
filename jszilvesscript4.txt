@@ -1,3 +1,4 @@
+-- This file creates a view of all customers purchased products and totals, deletes the product I made up, and attempts deleting an agent that deals with a customer
 USE jszilvesassign2db;
 
 SELECT * FROM agent;
@@ -6,14 +7,17 @@ SELECT * FROM customer;
 SELECT * FROM purchased;
 
 -- creating a view that displays all the information of a customer including what they have bought, how much, the cost per item, cost of total number of that item purchased 
-CREATE VIEW customerAllInfo AS SELECT firstname, lastname, description, quantity, costperitem, costperitem*quantity FROM customer, purchased, product WHERE customer.customerid=purchased.customerid and purchased.productid=product.productid ORDER BY lastname;
+CREATE VIEW customerTotalInfo AS SELECT firstname, lastname, description, quantity, costperitem, TRUNCATE(costperitem*quantity,2) AS 'Total Cost for all products purchased' FROM customer, purchased, product WHERE customer.customerid=purchased.customerid and purchased.productid=product.productid ORDER BY lastname;
 
 -- proof the view worked
 
-SELECT * FROM customerAllInfo ;
+SELECT * FROM customerTotalInfo ;
 
 -- only showing customers who have spent more than $100
-SELECT * FROM customerAllInfo WHERE costperitem*quantity>100;
+SELECT * FROM customerTotalInfo WHERE costperitem*quantity>100;
+
+-- all items in product
+SELECT * FROM product;
 
 -- deleting the product I made up from the product table 
 DELETE FROM product WHERE description= 'Bell';

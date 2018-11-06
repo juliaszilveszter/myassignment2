@@ -1,49 +1,63 @@
 USE jszilvesassign2db;
 -- Query 1
+-- description of all the products
 SELECT description FROM product;
 
 -- Query 2
+-- city of all customers with no repeats
 SELECT DISTINCT city FROM customer; 
 
 -- Query 3
+--  all the data in the agent table in order of their cities
 SELECT * FROM agent ORDER BY cityofwork;
 
 -- Query 4
+-- first and last name of all customers from Springfield
 SELECT firstname, lastname FROM customer WHERE city= 'Springfield'; 
 
 -- Query 5
+-- last name of all customers who deal with Regis
 SELECT lastname FROM customer WHERE agentid IN (SELECT agentid FROM agent WHERE firstname= 'Regis');
 
 -- Query 6
+-- description of any product with the letters "pad" or "Pad" in the description name
 SELECT description FROM product WHERE description like '%pad%' OR description like '%Pad%'; 
 
 -- Query 7
+-- the last name of each customer who has purchased products, the description of each product they purchased, the quantity they have purchased of that product
 SELECT lastname, description, quantity FROM customer, product, purchased WHERE customer.customerid=purchased.customerid and product.productid=purchased.productid;
 
 -- Query 8
+-- total number of products purchased by Homer displayed as "Homer's Total Purchases" Searched using his first name, not customer id 
 SELECT SUM(quantity) AS "Homer's Total Purchases" FROM purchased WHERE customerid IN (SELECT customerid FROM customer WHERE firstname ='Homer');
 
 -- Query 9 
+-- first, last name, and the total number of products purchased by each customer(who has purchased products)
 SELECT firstname, lastname,SUM(quantity) FROM purchased LEFT OUTER JOIN customer ON customer.customerid=purchased.customerid GROUP BY firstname;
 
 -- Query 10
+-- descriptions and quantity on hand of any products that have not been purchased by anyone
 SELECT description, productQuantity FROM product WHERE productid NOT IN (SELECT productid FROM purchased);
 
 -- Query 11
+-- description and quantity of any product that has not been purchase by Fred Flintstone searching his name in the query, both first and last)
 SELECT description, productQuantity FROM product WHERE productid NOT IN (SELECT productid FROM purchased WHERE customerid IN(SELECT customerid FROM customer WHERE firstname= 'Fred' and lastname= 'Flintstone'));
 
 -- Query 12
+-- first and last name of any agent and customer where the agent deals with a customer from the same city as the agent
 SELECT c.firstname,c.lastname, a.firstname, a.lastname FROM customer c, agent a WHERE c.agentid=a.agentid and c.city=a.cityofwork;
 
-
--- Query 13 
+-- Query 13
+-- total number of knee pads that have been purchase displayed as 'Total Knee Pads Purchased' 
 SELECT SUM(quantity) AS 'Total Knee Pads Purchased' FROM purchased WHERE productid IN (SELECT productid FROM product WHERE description= 'Knee Pads'); 
 
 
 -- Query 14
--- all products  (description) which have been purchased by more than 3 customers 
-SELECT COUNT(description)>3, purchased.productid, description FROM product, purchased WHERE
-product.productid=purchased.productid GROUP BY productid;
+-- all product descriptions which have been purchased by more than 3 customers 
+SELECT description FROM product WHERE productid IN(SELECT productid
+FROM purchased
+GROUP BY productid
+HAVING COUNT(*) >= 3);
 
 
 -- Query 15
