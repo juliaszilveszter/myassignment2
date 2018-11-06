@@ -1,20 +1,27 @@
+USE jszilvesassign2db;
+
 SELECT * FROM agent;
 SELECT * FROM product;
 SELECT * FROM customer;
 SELECT * FROM purchased;
 
+-- creating a view that displays all the information of a customer including what they have bought, how much, the cost per item, cost of total number of that item purchased 
 CREATE VIEW customerAllInfo AS SELECT firstname, lastname, description, quantity, costperitem, costperitem*quantity FROM customer, purchased, product WHERE customer.customerid=purchased.customerid and purchased.productid=product.productid ORDER BY lastname;
 
----- probably change the deciamls for last column
+-- proof the view worked
 
 SELECT * FROM customerAllInfo ;
 
+-- only showing customers who have spent more than $100
 SELECT * FROM customerAllInfo WHERE costperitem*quantity>100;
 
+-- deleting the product I made up from the product table 
 DELETE FROM product WHERE description= 'Bell';
 
+-- proof the delete worked
 SELECT * FROM product;
 
+-- attempt to delete agent from agent table that works in Springfield 
 DELETE FROM agent WHERE cityofwork= 'Springfield';
 -- the row for which the agent from Spingfield was not deleted because it was assigned to customers in the customer table on which I put the constraint for the foreign key which agentid is 'ON DELETE NO ACTION' because in the instrucitons we were told agents who are working with customers may not be deleted.
 

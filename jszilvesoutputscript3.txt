@@ -1,8 +1,4 @@
 Warning: Using a password on the command line interface can be insecure.
-ERROR 1064 (42000) at line 18: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '---what does % mean
-
-
-SELECT lastname, description, quantity FROM customer, prod' at line 1
 --------------
 SELECT description FROM product
 --------------
@@ -11,6 +7,7 @@ description
 Bike
 Socks
 Elbow pads
+Bell
 Knee Pads
 Roller Blades
 Helmet
@@ -58,9 +55,102 @@ description
 Elbow pads
 Knee Pads
 --------------
----what does % mean
-
-
 SELECT lastname, description, quantity FROM customer, product, purchased WHERE customer.customerid=purchased.customerid and product.productid=purchased.productid
 --------------
 
+lastname	description	quantity
+Griffens	Elbow pads	19
+Griffens	Elbow pads	19
+Griffens	Elbow pads	19
+Flintstone	Elbow pads	2
+Flintstone	Knee Pads	2
+Flintstone	Elbow pads	2
+Flintstone	Knee Pads	2
+Flintstone	Elbow pads	2
+Flintstone	Knee Pads	2
+Simpson	Helmet	20
+Simpson	Socks	14
+Simpson	Helmet	20
+Simpson	Socks	14
+Simpson	Helmet	20
+Simpson	Socks	14
+Simpson	Helmet	20
+Simpson	Socks	14
+Simpson	Elbow pads	10
+Bob	Helmet	5
+Bob	Socks	5
+Bob	Knee Pads	5
+Bob	Elbow pads	5
+Bob	Helmet	1
+Bob	Socks	2
+Bob	Knee Pads	4
+Bob	Elbow pads	2
+Bob	Helmet	1
+Bob	Socks	2
+Bob	Knee Pads	4
+Bob	Elbow pads	2
+--------------
+SELECT SUM(quantity) AS "Homer's Total Purchases" FROM purchased WHERE customerid IN (SELECT customerid FROM customer WHERE firstname ='Homer')
+--------------
+
+Homer's Total Purchases
+146
+--------------
+SELECT firstname, lastname,SUM(quantity) FROM purchased LEFT OUTER JOIN customer ON customer.customerid=purchased.customerid GROUP BY firstname
+--------------
+
+firstname	lastname	SUM(quantity)
+Fred	Flintstone	12
+Homer	Simpson	146
+Peter	Griffens	57
+Sideshow	Bob	38
+--------------
+SELECT description, productQuantity FROM product WHERE productid NOT IN (SELECT productid FROM purchased)
+--------------
+
+description	productQuantity
+Bike	200
+Bell	300
+Roller Blades	89
+--------------
+SELECT description, productQuantity FROM product WHERE productid NOT IN (SELECT productid FROM purchased WHERE customerid IN(SELECT customerid FROM customer WHERE firstname= 'Fred' and lastname= 'Flintstone'))
+--------------
+
+description	productQuantity
+Bike	200
+Socks	100
+Bell	300
+Roller Blades	89
+Helmet	30
+--------------
+SELECT c.firstname,c.lastname, a.firstname, a.lastname FROM customer c, agent a WHERE c.agentid=a.agentid and c.city=a.cityofwork
+--------------
+
+firstname	lastname	firstname	lastname
+Barney	Rubble	Regis	Philbin
+Monty	Burns	Hugh	Grant
+Fred	Flintstone	Regis	Philbin
+Homer	Simpson	Hugh	Grant
+--------------
+SELECT SUM(quantity) AS 'Total Knee Pads Purchased' FROM purchased WHERE productid IN (SELECT productid FROM product WHERE description= 'Knee Pads')
+--------------
+
+Total Knee Pads Purchased
+19
+--------------
+SELECT COUNT(description)>3, purchased.productid, description FROM product, purchased WHERE
+product.productid=purchased.productid GROUP BY productid
+--------------
+
+COUNT(description)>3	productid	description
+1	12	Socks
+1	66	Elbow pads
+1	78	Knee Pads
+1	99	Helmet
+--------------
+SELECT firstname, lastname FROM agent WHERE agentid IN(SELECT agentid FROM customer WHERE customerid IN(SELECT customerid FROM purchased WHERE productid IN (SELECT productid FROM product WHERE description='Knee Pads')))
+--------------
+
+firstname	lastname
+Regis	Philbin
+Rosie	ODonnell

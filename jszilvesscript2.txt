@@ -1,18 +1,22 @@
+-- Julia Szilveszter Script 2, Inserting into database
 USE jszilvesassign2db;
 
+-- Loading 'loadfall208' data into assignment2 directory (nano editor, not shown) and loading into product table 
 LOAD DATA LOCAL INFILE 'loadfall2018.txt' 
 INTO TABLE product 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
+-- Proof that loading into product worked
 SELECT * FROM product;
 
+-- inserting more products into product table 
 INSERT INTO product (productid, description, costperitem, productQuantity) VALUES (66,  'Elbow pads', 14.25, 120);
 
 INSERT INTO product (productid, description, costperitem, productQuantity) VALUES (67, 'Bell', 3.50, 300);
 
-
+-- inserting agents into agent table 
 
 INSERT INTO agent (agentid, firstname, lastname, cityofwork, commissionperc) VALUES (99, 'Hugh', 'Grant', 'Springfield', 16);
 
@@ -28,6 +32,7 @@ INSERT INTO agent (agentid, firstname, lastname, cityofwork, commissionperc) VAL
 
 INSERT INTO agent (agentid, firstname, lastname, cityofwork, commissionperc) VALUES (17, 'Julia', 'Szilveszter', 'London', 98);
 
+-- inserting customers into customer table, with foriegn key 'agentid' for agent dealing with customer 
 
 INSERT INTO customer (customerid, firstname,lastname, city, phonenum, agentid) VALUES (21, 'Homer', 'Simpson', 'Springfield', 6868956, 99);
 
@@ -43,13 +48,12 @@ INSERT INTO customer (customerid, firstname,lastname, city, phonenum, agentid) V
 
 INSERT INTO customer (customerid, firstname,lastname, city, phonenum, agentid) VALUES (14, 'Peter', 'Griffens', 'Providence', 9874567, 99);
 
+-- inserting purchased products and by who into purchased table 
 INSERT INTO purchased (productid, customerid, quantity) VALUES (99, 21, 20);
 
 INSERT INTO purchased (productid, customerid, quantity) VALUES (12, 21, 14);
 
-
-INSERT INTO purchased (productid, customerid, quantity) VALUES 
-(66, 99, 10);
+INSERT INTO purchased (productid, customerid, quantity) VALUES (66, 21, 10);
 
 INSERT INTO purchased (productid, customerid, quantity) VALUES (99,31, 1);
 
@@ -57,29 +61,30 @@ INSERT INTO purchased (productid, customerid, quantity) VALUES (12,31, 2);
 
 INSERT INTO purchased (productid, customerid, quantity) VALUES (78,31,4);
 
-
 INSERT INTO purchased (productid, customerid, quantity) VALUES (66,31, 2);
-
 
 INSERT INTO purchased (productid, customerid, quantity) VALUES (66,15,2);
 
-
 INSERT INTO purchased (productid, customerid, quantity) VALUES (78,15,2);
-
 
 INSERT INTO purchased (productid, customerid, quantity) VALUES (66,14,19);
 
+-- proof the inserts worked 
 SELECT * FROM agent;
 SELECT * FROM product;
 SELECT * FROM customer;
 SELECT * FROM purchased;
 
-UPDATE customer SET firstname = 'Wonder', lastname= 'Woman' WHERE customerid= 13; #WHAT FIX FIX FIX 
+-- updating Super Man to Wonder Woman in customer table 
+UPDATE customer SET firstname = 'Wonder', lastname= 'Woman' WHERE firstname= 'Super' AND lastname= 'Man';  
 
-UPDATE purchased SET quantity= 5 WHERE customerid IN (SELECT customerid FROM customer WHERE firstname='Sideshow'); #DONT KNOW IF THIS IS OKAY 
+-- updating all quantities of products purchased by Sideshow to 5
+UPDATE purchased SET quantity= 5 WHERE customerid IN (SELECT customerid FROM customer WHERE firstname='Sideshow'); 
 
+-- updating all customer cities to Boston when their agent is Regis 
 UPDATE customer SET city= 'Boston' WHERE agentid IN (SELECT agentid FROM agent WHERE firstname= 'Regis');
 
+-- proof the updates worked 
 SELECT * FROM agent;
 SELECT * FROM product;
 SELECT * FROM customer;
